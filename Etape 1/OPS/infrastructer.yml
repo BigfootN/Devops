@@ -1,0 +1,5 @@
+---
+- hosts: vmetna
+  roles:
+      - docker_install
+      - docker_swarm
