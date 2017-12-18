@@ -1,5 +1,0 @@
----
-- hosts: vmetna
-  roles:
-      - docker_swarm
-      - docker_registry
