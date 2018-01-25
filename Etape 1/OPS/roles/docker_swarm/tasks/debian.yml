@@ -1,40 +1,39 @@
 ---
-- tasks:
-    - name: update cache
-        apt:
-            update_cache: yes
+- name: update cache
+  apt:
+    update_cache: yes
 
-    - name: clean packages
-        apt:
-            name:  "{{ item }}"
-            state: absent
-        with_items:
-            - docker
-            - docker-engine
-            - docker.io
+- name: clean packages
+  apt:
+    name:  "{{ item }}"
+    state: absent
+    with_items:
+      - docker
+      - docker-engine
+      - docker.io
 
-    - name: install docker dependencies
-        apt:
-            name: "{{ item }}"
-            state: latest
-        with_items:
-            - apt-transport-https
-            - ca-certificates
-            - curl
-            - software-properties-common
+- name: install docker dependencies
+  apt:
+    name: "{{ item }}"
+    state: latest
+    with_items:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
 
-    - name: install docker gpg key
-        apt_key:
-            url: https://download.docker.com/linux/ubuntu/gpg
-            state: present
+- name: install docker gpg key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
 
-    - name: update cache
-        apt:
-            update_cache: yes
+- name: update cache
+  apt:
+    update_cache: yes
 
-    - name: install docker ce
-        apt:
-            name: "{{ item }}"
-            state: latest
-        with_items:
-            - docker-ce
+- name: install docker ce
+  apt:
+    name: "{{ item }}"
+    state: latest
+    with_items:
+      - docker-ce

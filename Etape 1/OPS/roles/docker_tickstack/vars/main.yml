@@ -1,0 +1,5 @@
+---
+docker_images_file: influxdata.tar
+docker_images_tmp_dir: /tmp/docker_images
+
+docker_img_dirs: [ 'influxdb', 'chronograf', 'kapacitor', 'telegraf' ]

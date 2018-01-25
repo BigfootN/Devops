@@ -1,7 +1,7 @@
 ---
 - name: install on debian or ubuntu
-    import_tasks: debian.yml
-    when: ansible_os_family == "Debian"
+  import_tasks: debian.yml
+  when: ansible_os_family == "Debian"
 
 - name: deploy docker swarm
-    import_tasks: swarm_deploy.yml
+  import_tasks: swarm_deploy.yml
