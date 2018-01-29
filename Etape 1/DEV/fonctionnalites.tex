@@ -3,6 +3,7 @@
 \usepackage[a4paper, top=3cm, left=3cm, right=3cm, bottom=3cm]{geometry}
 \usepackage{graphicx}
 \usepackage{lmodern}
+\usepackage{lscape}
 
 \renewcommand{\thesection}{}
 \renewcommand{\thesubsection}{\arabic{subsection}}
@@ -20,15 +21,8 @@
 \includegraphics[width=10cm]{ddd.png} \\
 
 
-\section{Langage}
-\'Etant bas\'e sur le web, avec des machines distantes, nous avons opt\'e pour le langage \textbf{PHP}. En effet, ce language semble \^{e}tre tout \`a fait adapt\'e pour ce type de situation. En ce qui concerne les bases de donn\'ees, le NoSQL semble \^{e}tre une solution adapt\'ee, puisque moins lourde que le SQL.
-
-\section{Communication}
-Afin que les services puissent communiquer entre eux, nous avons opt\'e pour l'API REST, qui est plut\^{o}t simple et semble bien remplir nos demandes. Aussi nous ne voyons pas l'int\'er\^{e}t de crypter les informations entre les microservices, donc du simple \textit{HTTP} suffira, et non pas du \textit{HTTPS}.
-
 \subsection{Ajout/Suppression d'un client}
 Cette fonctionnalit\'e est bien \'evidemment indispensable.
-
 
 \subsection{Modification du prix}
 Il serait \'egalement int\'eressant d'avoir la possibilit\'e de pouvoir modifier les prix pour les m\^{e}mes raisons que cit\'ees plus.
@@ -36,7 +30,6 @@ Il serait \'egalement int\'eressant d'avoir la possibilit\'e de pouvoir modifier
 
 \subsection{\'Etat des chambres}
 Il faudrait savoir quelles chambres sont disponibles. Il faudrait \'egalement pouvoir modifier l\'etat des chambres (libre ou occup\'ee). Il faudrait aussi savoir combien de chambres sont disponibles (par h\^{o}tel).
-
 
 \subsection{R\'eservation}
 Il faut bien s\^{u}r pouvoir modifer (ajout/suppression) les r\'eservations. On pourrait donc bien s\^{u}r pouvoir  avoir acc\`es au calendrier.
@@ -53,15 +46,16 @@ Il serait, comme pour les chambres, \'egalement int\'eressant de pouvoir supprim
 \subsection{Mail}
 Permettrait de pouvoir \'ecrire des mails.
 
+\pagebreak
+\begin{landscape}
 \section{Microservices}
-\includegraphics[width=12cm]{microservices.png} \\
+	\centering
+\includegraphics[width=18cm]{microservices.png} \\
+\end{landscape}
 
+\pagebreak
 \vspace{1cm}
 Le pattern utilis\'e serait avec simplement un gateway/aggregator qui permettrait de pouvoir faire appel aux diff\'erents services, soit de pouvoir modifer/r\'ecup\'erer des donn\'ees. Si un service a besoin de faire appel \`a un autre, il passerait par la gateway. La communication se fera gr\^{a}ce \`a l'API REST.
-
-\subsection{Backup}
-Ce service permettrait de pouvoir cr\'eer un backup. Le backup servirait avant tout ce qui est donn\'ee (hormis les logs). En effet les logs serviraient plus \`a pouvoir identifier la source d'un probl\`eme, ce qui ne semble pas indispensable en cas de probl\`emes mat\'eriels.
-
 
 \subsection{Log}
 Ce service permet d'avoir un syst\`eme de logs. Pensant faire tourner les serveurs sous linux, les logs seraient sauvegard\'es sous \begin{verbatim} /var/log/<type de service> \end{verbatim}
@@ -90,11 +84,9 @@ Ce service permettrait de pouvoir lire les logs.
 \subsection{Chambres}
 Ce service permettrait de pouvoir lire et \'ecrire dans la base de donn\'ees des chambres.
 
-
 \pagebreak
 \section{Routes}
 \begin{itemize}
-
 
 	\item GET
 	\begin{itemize}
@@ -109,24 +101,20 @@ Ce service permettrait de pouvoir lire et \'ecrire dans la base de donn\'ees des
 		R\'ecup\`ere tous les h\^{o}tels \\
 		retourne: int[]
 
-
 	\item /client/id/\{id\}\\
 		R\'ecup\`ere un client sp\'ecifique \\
 		\textit{id}: int \\
 		retourne: dictionnaire
-
 
 	\item /room/id/\{id\}\\
 		R\'ecup\`ere une chambre\\
 		\textit{id}: int \\
 		retourne: dictionnaire
 
-
 	\item /hotel/id/\{id\}/rooms\\
 		R\'ecup\`ere toutes les chambres d'un h\^{o}tel\\
 		\textit{id}: int \\
 		retourne: int[]
-
 
 	\item /hotel/id/\{hotel\_id\}/room/id/\{room\_id\}\\
 		R\'ecup\`ere la chambre d'un h\^{o}tel \\
@@ -138,18 +126,15 @@ Ce service permettrait de pouvoir lire et \'ecrire dans la base de donn\'ees des
 		R\'ecup\`ere le calendrier \\
 		retourne: dictionnaire
 
-
 	\item /calendar/year/\{year\}\\
 		R\'ecup\`ere le calendrier mais pour une seule ann\'ee \\
 		retourne: dictionnaire
-
 
 	\item /booking/id/\{booking\_id\}/client/\{client\_id\}\\
 		R\'ecup\`ere une r\'eservation pour un client \\
 		\textit{booking\_id}: int \\
 		\textit{client\_id}: int \\
 		retourne: dictionnaire
-
 
 	\item /booking/day/\{day\}/month/\{month\}/year/\{year\}/nights/\{nights\} \\
 		R\'ecup\`ere les chambres libres pour la date et le nombre de nuits indiqu\'es \\
@@ -158,9 +143,23 @@ Ce service permettrait de pouvoir lire et \'ecrire dans la base de donn\'ees des
 		\textit{year}: int \\
 		\textit{nights}: int \\
 		retourne: int[]
+
+	\item /room/\{id\}/price \\
+		R\'ecup\`ere le prix d'une chambre \\
+		\textit{id}: int \\
+		retourne: int
+
+	\item /service/id/\{id\}/price \\
+		R\'ecup\`ere le prix d'un service \\
+		\textit{id}: int \\
+		retourne: int
+
+	\item /booking/id/\{id\}/service \\
+		R\'ecup\`ere les services d'une r\'eservation \\
+		\textit{id}: int \\
+		retourne: int[]
 	\end{itemize}
 
-	\pagebreak
 \item UPDATE
 	\begin{itemize}
 
@@ -189,9 +188,13 @@ Ce service permettrait de pouvoir lire et \'ecrire dans la base de donn\'ees des
 		Met \`a jour une chambre \\
 		\textit{id}: int \\
 		\textit{rtype\_id}: int
+
+	\item /room/id/\{id\}/price/\{price\} \\
+		Modifie le prix d'une chambre \\
+		\textit{id}: int \\
+		\textit{price}: int \\
 	\end{itemize}
 
-	\vspace{1cm}
 \item POST
 	\begin{itemize}
 
@@ -205,7 +208,6 @@ Ce service permettrait de pouvoir lire et \'ecrire dans la base de donn\'ees des
 		Ajoute une nouvelle chambre \\
 		\textit{rtype\_id}: int
 
-
 	\item /booking/day/\{day\}/month/\{month\}/year/\{year\}/nights/\{nights\}/room/id/\{room\_id\}- /client/id/\{client\_id\}\\
 		Ajoute une r\'eservation \\
 		\textit{day}: int \\
@@ -218,31 +220,36 @@ Ce service permettrait de pouvoir lire et \'ecrire dans la base de donn\'ees des
 	\item /hotel/id/\{id\}\\
 		ajoute un nouvel h\^{o}tel \\
 		\textit{id}: int
+
+	\item /booking/id/\{booking\_id\}/service/id/\{service\_id\} \\
+		Ajoute un service \`a une r\'eservation \\
+		\textit{booking\_id}: int \\
+		\textit{service\_id}: int
 	\end{itemize}
-\pagebreak
-	\item DELETE
+
+\item DELETE
 	\begin{itemize}
-		\item /client/id/\{id\}\\
+	\item /client/id/\{id\}\\
 		Supprime un client \\
 		\textit{id}: int
 
-
-		\item /booking/id/\{id\}\\
+	\item /booking/id/\{id\}\\
 		Supprime une r\'eservation \\
 		\textit{id}: int
 
-
-		\item /hotel/id/\{id\}\\
+	\item /hotel/id/\{id\}\\
 		Supprime un h\^{o}tel \\
 		\textit{id}: int
-
-
 
 	\item /room/id/\{id\}\\
 		Supprime une chambre \\
 		\textit{id}: int
 
-\end{itemize}
+	\item /service/id/\{id\}\\
+		Supprime un service \\
+		\textit{id}: int
+
+	\end{itemize}
 \end{itemize}
 
 
