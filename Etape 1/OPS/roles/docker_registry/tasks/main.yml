@@ -7,4 +7,6 @@
 
 - name: create volume
   command: docker run -d -p 5000:5000 --name Docker
-  when: inventory_hostname in groups['VMManager']
+  when:
+    - inventory_hostname in groups['VMManager']
+    -
