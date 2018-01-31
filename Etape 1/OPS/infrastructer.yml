@@ -1,6 +1,0 @@
----
-- hosts: all
-  roles:
-    - docker_swarm
-    - docker_registry
-    - docker_tickstack
