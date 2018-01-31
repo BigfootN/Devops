@@ -1,56 +1,39 @@
 ---
-- name: clean packages
-  become: yes
+- name: update cache
   apt:
-    name: "{{ item }}"
+    update_cache: yes
+
+- name: clean packages
+  apt:
+    name:  "{{ item }}"
     state: absent
-  with_items:
-        - docker
-        - docker-engine
-        - docker.io  
+    with_items:
+      - docker
+      - docker-engine
+      - docker.io
+
 - name: install docker dependencies
-  become: yes
   apt:
     name: "{{ item }}"
     state: latest
-  with_items:
-    - apt-transport-https
-    - ca-certificates
-    - curl
-    - software-properties-common
+    with_items:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
 
-- name: get os-release
-  become: yes
-  shell: lsb_release -is | tr [':upper:'] [':lower:']
-  args:
-    executable: /bin/bash
-  register: release
-
-- name: retrive docker gpg key
-  become: yes
+- name: install docker gpg key
   apt_key:
-    url: https://download.docker.com/linux/{{ release.stdout }}/gpg
+    url: https://download.docker.com/linux/ubuntu/gpg
     state: present
-  register: key
 
-- name: get os-release codename
-  become: yes
-  shell: lsb_release -cs
-  args:
-    executable: /bin/bash
-  register: releasecn
-  
-- name: get repository
-  become: yes
-  apt_repository:
-    repo: "deb [arch=amd64] https://download.docker.com/linux/\"{{ release.stdout }}\" \"{{ releasecn.stdout }}\" stable"
-    state: present
+- name: update cache
+  apt:
+    update_cache: yes
 
 - name: install docker ce
-  become: yes
   apt:
     name: "{{ item }}"
     state: latest
-    update_cache: yes
-  with_items:
-    - docker-ce
+    with_items:
+      - docker-ce

@@ -1,4 +1,5 @@
 ---
+
 - name: init docker swarm
   command: docker swarm init --advertise-addr "{{ inventory_hostname }}"
   when: inventory_hostname in groups['VMManager']
