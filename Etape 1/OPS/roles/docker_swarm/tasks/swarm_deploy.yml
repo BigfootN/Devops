@@ -1,14 +1,40 @@
 ---
+- name: get hostname
+  shell: hostname
+  register: hostname
 
+- name: check if it is already a manager
+  become: yes
+  shell: "docker node inspect --format '{{ '{{' }} .Spec.Role {{ '}}' }}' self"
+  register: ismanager
+  when: inventory_hostname in groups['VMManager']
+  
 - name: init docker swarm
-  command: docker swarm init --advertise-addr "{{ inventory_hostname }}"
+  become: yes
+  command: docker swarm init
+  when: 
+    - inventory_hostname in groups['VMManager']
+    - ismanager.stdout != "manager"
+
+- name: retrieve worker token
+  become: yes
+  shell: docker swarm join-token --quiet worker
+  register: worker_token
   when: inventory_hostname in groups['VMManager']
 
-- name: retrieve manager token
-  command: docker swarm join-token --quiet manager
-  register: token
-  when: inventory_hostname in groups['VMManager']
+- name: is a an active swarm node
+  become: yes
+  shell: 'read -r is active <<< $(sudo docker info | grep "Swarm"); echo "$active"'
+  args:
+    executable: /bin/bash
+  when: inventory_hostname in groups['VMWorker']
+  register: isworker
 
 - name: add workers to manager
-  command: docker swarm join --token "{{ token.stdout }}" "{{ inventory_hostname }}":2377
-  when: inventory_hostname in groups['VMWorker']
+  become: yes
+  shell: docker swarm join --token {{ hostvars[item]['worker_token'].stdout }} {{ hostvars[item]['ansible_eth0']['ipv4']['address'] }}:2377
+  when: 
+    - inventory_hostname in groups['VMWorker']
+    - isworker.stdout == "inactive"
+  with_items:
+    - "{{ groups['VMManager'] }}"
