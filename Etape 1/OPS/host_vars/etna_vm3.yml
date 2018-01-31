@@ -1,0 +1,5 @@
+---
+ansible_host: 172.16.226.88
+ansible_connection: ssh
+ansible_user: yon_n
+ansible_ssh_pass: "{{ etna_vm3_pwd }}"

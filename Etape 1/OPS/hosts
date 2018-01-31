@@ -1,24 +1,10 @@
-[VM1]
-172.16.226.34
+[VMManager]
+etna_vm1
 
-[VM2]
-172.16.226.56
-
-[VM3]
-172.16.226.88
-
-[VMManager:children]
-VM1
-
-[VMWorker:children]
-VM2
-VM3
+[VMWorker]
+etna_vm2
+etna_vm3
 
 [all:children]
 VMWorker
 VMManager
-
-[all:vars]
-ansible_user=yon_n
-ansible_connection=ssh
-ansible_ssh_private_key_file=~/.ssh/etna/id_rsa
