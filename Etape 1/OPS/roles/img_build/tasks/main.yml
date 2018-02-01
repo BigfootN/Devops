@@ -1,0 +1,26 @@
+---
+- name: create a temporary build directory
+  tempfile:
+    state: directory
+    suffix: build
+  register: build_path
+
+- name: send Dockerfile
+  copy:
+    src: '{{ role_path }}/files/{{ item }}'
+    dest: '{{ build_path.path }}/'
+  with_items:
+    - "chronograf"
+    - "telegraf"
+    - "influxdb"
+    - "kapacitor"
+
+- name: build file
+  become: yes
+  shell: 'docker build - < {{ build_path.path }}/{{ item }}/Dockerfile'
+  ignore_errors: yes
+  with_items:
+    - "chronograf"
+    - "telegraf"
+    - "influxdb"
+    - "kapacitor"
