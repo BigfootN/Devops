@@ -1,8 +1,7 @@
 ---
 - hosts: all
   roles:
-    # - docker_swarm
-    #- docker_registry
-    #- docker_tickstack
+    - docker_swarm
+    - docker_registry
     - img_build
-
+    - docker_tickstack

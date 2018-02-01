@@ -1,0 +1,6 @@
+---
+images:
+  - name: chronograf
+  - name: telegraf
+  - name: influxdb
+  - name: kapacitor

@@ -1,6 +1,6 @@
 ---
 - name: install dependencies
-  when: inventory_hostname in groups['VM1']
+  when: inventory_hostname in groups['VMManager']
   apt:
     name: "{{ item }}"
     update_cache: yes
@@ -11,7 +11,7 @@
       - ca-certificates
 
 - name: install gitlab
-  when: inventory_hostname in groups['VM1']
+  when: inventory_hostname in groups['VMManager']
   apt:
     name: gitlab
     update_cache: yes

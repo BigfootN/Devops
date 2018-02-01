@@ -1,18 +1,8 @@
 ---
-- name: copy docker images archive to tmp
-  when: inventory_hostname in groups['VMManager']
-  copy:
-    src: {{ docker_images_file }}
-    dest: {{ docker_images_tmp_dir }}/
+- name: build images
+  include_role:
+    name: img_build
 
-- name: create images
-  command: docker build -t "{{ item }}" {{ docker_images_tmp_dir }}/influxdata/"{{ item }}"
-  when: inventory_hostname in groups['VMManager']
-  with_items:
-    - "{{ docker_img_dirs }}"
-
-- name: push images
-  command: docker push "{{ item }}" registry:5000
-  when: inventory_hostname in groups['VMManager']
-  with_items:
-    - "{{ docker_img_dirs }}"
+- name: install gitlab
+  import_tasks:
+    - gitlab.yml

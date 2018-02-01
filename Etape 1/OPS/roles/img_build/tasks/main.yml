@@ -7,19 +7,29 @@
 
 - name: send Dockerfile
   copy:
-    src: '{{ role_path }}/files/{{ item }}'
+    src: '{{ role_path }}/files/{{ item.name }}'
     dest: '{{ build_path.path }}/'
   with_items:
-    - "chronograf"
-    - "telegraf"
-    - "influxdb"
-    - "kapacitor"
+    - "{{ images }}"
 
 - name: build file
   become: yes
-  shell: 'docker build {{ build_path.path }}/{{ item }}'
+  shell: 'docker build --quiet -t {{ item.name }} {{ build_path.path }}/{{ item.name }}'
+  register: image_id
   with_items:
-    - "chronograf"
-    - "telegraf"
-    - "influxdb"
-    - "kapacitor"
+    - "{{ images }}"
+
+- name: tag images
+  become: yes
+  shell: "docker tag {{ item[0].stdout }} {{ hostvars['etna_vm1']['ansible_eth0']['ipv4']['address'] }}:5000/registry/{{ item[1].name }}"
+  with_nested:
+    - "{{ image_id.results }}"
+    - "{{ images }}"
+
+- name: push registry
+  become: yes
+  shell: "docker push {{ hostvars[item[1]]['ansible_eth0']['ipv4']['address'] }}:5000/registry/{{ item[0].name }}"
+  with_nested:
+    - "{{ images }}"
+    - "{{ groups['VMManager'] }}"
+
