@@ -17,8 +17,7 @@
 
 - name: build file
   become: yes
-  shell: 'docker build - < {{ build_path.path }}/{{ item }}/Dockerfile'
-  ignore_errors: yes
+  shell: 'docker build {{ build_path.path }}/{{ item }}'
   with_items:
     - "chronograf"
     - "telegraf"
