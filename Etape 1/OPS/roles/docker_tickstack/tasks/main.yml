@@ -3,6 +3,5 @@
   include_role:
     name: img_build
 
-- name: install gitlab
-  import_tasks:
-    - gitlab.yml
+- name: import tasks
+  import_tasks: gitlab.yml
