@@ -1,5 +1,6 @@
 ---
 - name: install dependencies
+  become: yes
   when: inventory_hostname in groups['VMManager']
   apt:
     name: "{{ item }}"

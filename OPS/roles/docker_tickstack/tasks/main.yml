@@ -1,7 +1,3 @@
 ---
-- name: build images
-  include_role:
-    name: img_build
-
 - name: import tasks
   import_tasks: gitlab.yml
