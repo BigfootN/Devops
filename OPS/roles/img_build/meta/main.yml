@@ -1,4 +1,0 @@
----
-dependencies:
-  - { role: docker_swarm }
-  - { role: docker_registry }

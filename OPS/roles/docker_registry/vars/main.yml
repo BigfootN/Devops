@@ -1,0 +1,17 @@
+---
+registry:
+  name: 'registryetna.com'
+  port: 5000
+
+
+ssl_private_key_path: 
+  dir: '/etc/docker/certs.d/private/{{ registry.name }}:{{ registry.port }}'
+  file: 'ca.pem'
+
+ssl_csr_path: 
+  dir: '/etc/docker/certs.d/csr/{{ registry.name }}:{{ registry.port }}'
+  file: 'ca.csr'
+
+ssl_crt_path: 
+  dir: '/etc/docker/certs.d/crt/{{ registry.name }}:{{ registry.port }}'
+  file: 'ca.crt'

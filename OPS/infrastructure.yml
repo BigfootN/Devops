@@ -3,5 +3,8 @@
   roles:
     - docker_swarm
     - docker_registry
-    - img_build
+    - img_telegraf
+    - img_chronograf
+    - img_kapacitor
+    - img_influxdb
     - docker_tickstack

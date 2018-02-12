@@ -1,0 +1,31 @@
+---
+- name: create a temporary build directory
+  tempfile:
+    state: directory
+    suffix: build
+  register: build_path
+  when:
+    - inventory_hostname in groups['VMManager']
+
+- name: send Dockerfile
+  copy:
+    src: '{{ role_path }}/files/'
+    dest: '{{ build_path.path }}/'
+  when:
+    - inventory_hostname in groups['VMManager']
+  register: dockerfile
+
+- name: build file
+  become: yes
+  shell: 'docker build -t registryetna.com:5000/telegraf:latest {{ item.dest }}'
+  register: image_id
+  with_items:
+    - "{{ dockerfile }}"
+  when:
+    - inventory_hostname in groups['VMManager']
+
+- name: push image to registry
+  become: yes
+  shell: "docker push registryetna.com:5000/telegraf:latest"
+  when:
+    - inventory_hostname in groups['VMManager']
