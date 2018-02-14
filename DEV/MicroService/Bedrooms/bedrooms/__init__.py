@@ -1,0 +1,1 @@
+from .bedrooms import Bedrooms
